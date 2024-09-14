@@ -51,7 +51,7 @@ class EntityHintCollection:
             raise ValueError("Entity not found in the collection")
     
     def output_entities(self):
-        return ", ".join(name for name in sorted(self.entities))
+        return "\n".join(name for name in sorted(self.entities))
 
     def __str__(self):
         return "\n".join(str(self.entities[name]) for name in sorted(self.entities))
@@ -266,6 +266,7 @@ def llama_extract_hint(text):
             if len(entity_hints) == 1:
                 first_entity = entity
         elif not re.match(r'\d+\.', line):
+            stripped_line = line
             entity = stripped_line
             entity_hints[entity] = []
             if len(entity_hints) == 1:

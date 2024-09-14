@@ -176,38 +176,54 @@ def llama_extract_scores(text, hint_list):
     entity_list = []
     entity_scores = {}
 
+    print(lines)
     flag = True
     sum_score = 0 
     for line in lines:
         if not re.match(r'\d+\.', line):
             if entity is not None:
-                aver = sum_score / len(hint_list[entity])
+                if entity not in hint_list:
+                    flag = False
+                    break
+                if len(hint_list[entity]) > 0:
+                    aver = sum_score / len(hint_list[entity])
+                else:
+                    aver = 0
                 entity_scores[entity] = aver
                 sum_score = 0
             entity = line.strip()
             entity_list.append(entity)
+            print(entity)
             if entity not in hint_list:
                 flag = False
                 break
         elif entity is not None and re.match(r'\d+\.', line):
             stripped_line = re.sub(r'^\d+\.\s*', '', line)
-            hint, score = stripped_line.split('--', 1)
-            hint = hint.strip()
-            if hint not in hint_list[entity]:
-                flag = False
-                break
-            match = re.search(r'\d+\.\d+', score)
-            if match:
-                extracted_score = float(match.group())
+            parts = stripped_line.split('--', 1)
+            if len(parts) == 2:
+                hint, score = parts
+                hint = hint.strip()
+                if hint not in hint_list[entity]:
+                    flag = False
+                    break
+                match = re.search(r'\d+\.\d+', score)
+                if match:
+                    extracted_score = float(match.group())
+                else:
+                    extracted_score = 0
             else:
                 extracted_score = 0
-            
+            print(extracted_score)
             sum_score += extracted_score
 
             
-    if entity is not None:
-        aver = sum_score / len(hint_list[entity])
-        entity_scores[entity] = aver
+    # if entity is not None and entity in hint_list:
+    #     if len(hint_list[entity]) > 0: 
+    #         aver = sum_score / len(hint_list[entity])
+    #         entity_scores[entity] = aver
+    #     else:
+    #         aver = 0
+    #         entity_scores[entity] = aver
 
 
     
@@ -233,22 +249,22 @@ def read_file_and_process(file_path):
 
 
 def average_entities_scores(entity_scores):
-    entity_averages = {}
+    all_total_aver = []
     entity_list = []
-
     for entity in entity_scores.entities.values():
-        sum_score = sum(float(score) for score in entity.scores)
-        average_score = sum_score / len(entity.scores) if entity.scores else 0
-        
-        entity_averages[entity.name] = average_score
+        sum_score = 0
         entity_list.append(entity.name)
-        
         print(f"Entity: {entity.name}")
         for score in entity.scores:
             print(f"Score: {score}")
-    
-    return entity_averages, entity_list
-
+            sum_score += float(score)
+        if len(entity.scores) != 0:
+            aver = sum_score /len(entity.scores)
+        else:
+            aver = 0
+        all_total_aver.append(aver)
+    entityandscores = dict(zip(entity_list, all_total_aver))
+    return entityandscores, entity_list
 
 
 def average_entity_scores(entity_scores):

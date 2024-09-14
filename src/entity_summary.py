@@ -26,12 +26,6 @@ def find_optimal(entites_hints, entities_scores):
             if entities_scores[entity_hint] <= second_score and entity_hint != first_entity:
                 second_score = entities_scores[entity_hint]
                 second_entity = entity_hint   
-
-        if first_entity == None or second_entity == None:
-            first_entity = list(entites_hints.entities.values())[0].name
-            second_entity = list(entites_hints.entities.values())[1].name
-
-            
         match = True  
     else:
         print("no match! But you can review again!")
@@ -39,10 +33,7 @@ def find_optimal(entites_hints, entities_scores):
 
     return first_entity, second_entity, match 
 
-
-
-
-def alter_find_optimal(entites_hints, entities_scores):
+def find_alter_optimal(entites_hints, entities_scores):
     first_entity = None
     second_entity = None
     first_score = 0
@@ -65,21 +56,12 @@ def alter_find_optimal(entites_hints, entities_scores):
             if entities_scores[entity_hint] >= second_score and entity_hint != first_entity:
                 second_score = entities_scores[entity_hint]
                 second_entity = entity_hint   
-
-        if first_entity == None or second_entity == None:
-            first_entity = list(entites_hints.entities.values())[0].name
-            second_entity = list(entites_hints.entities.values())[1].name
-
-            
         match = True  
     else:
         print("no match! But you can review again!")
     
 
     return first_entity, second_entity, match 
-
-
-
 
 
 def llama_find_optimal(entities_hints, entities_scores):
@@ -110,3 +92,32 @@ def llama_find_optimal(entities_hints, entities_scores):
 
 
     return first_entity, second_entity, match
+
+
+def llama_alter_find_optimal(entities_hints, entities_scores):
+    # Initialize variables to store the optimal entities
+    first_entity = None
+    second_entity = None
+    match = False
+
+    # Ensure the length of entities_hints matches the length of entities_scores
+    if len(entities_hints) != len(entities_scores):
+        return first_entity, second_entity, match
+    
+    # Sort entities based on scores in descending order
+    sorted_entities = sorted(entities_scores.items(), key=lambda x: x[1], reverse=True)
+
+    # Iterate through sorted entities to find the two with the highest scores
+    for entity, score in sorted_entities:
+        if entity in entities_hints:
+            if first_entity is None:
+                first_entity = entity
+                first_score = score
+            elif second_entity is None:
+                second_entity = entity
+                second_score = score
+                match = True
+                break
+
+    return first_entity, second_entity, match
+
