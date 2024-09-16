@@ -28,13 +28,13 @@ You can use any openai model (`gpt-3.5-turbo`, `gpt-4`, etc.) as `YOUR_MODEL`.
 `python main.py --model_name_or_path=YOUR_MODEL  --prompt_type=cot`
 - Complex-CoT:
 `python main.py --model_name_or_path=YOUR_MODEL  --prompt_type=comcot`
-- CoT + DS:
+- CoT + DSR:
 `python main.py --model_name_or_path=YOUR_MODEL  --prompt_type=dd`
 
 ### LLaMA2 Experiment
 You can use any LLaMA model as `YOUR_MODEL`.
-- CoT + DS:
+- CoT + DSR:
 `python AddSub_DD.py --model=YOUR_MODEL`
 `python CSQA_DD.py --model=YOUR_MODEL`
-- ComplexCoT + DS
+- ComplexCoT + DSR
 `python svamp_dd_com.py --model=YOUR_MODEL`
