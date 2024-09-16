@@ -1,5 +1,5 @@
-# DS
-DS is a plug-and-play prompting method
+# DSR
+DSR is a plug-and-play prompting method
 
 
 ## Installation
@@ -33,7 +33,8 @@ You can use any openai model (`gpt-3.5-turbo`, `gpt-4`, etc.) as `YOUR_MODEL`.
 
 ### LLaMA2 Experiment
 You can use any LLaMA model as `YOUR_MODEL`.
-- Complex-CoT + DS:
+- CoT + DS:
 `python AddSub_DD.py --model=YOUR_MODEL`
 `python CSQA_DD.py --model=YOUR_MODEL`
+- ComplexCoT + DS
 `python svamp_dd_com.py --model=YOUR_MODEL`
